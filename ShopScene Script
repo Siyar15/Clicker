@@ -1,0 +1,80 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class ShopControlScript : MonoBehaviour {
+
+	float moneyAmount;
+	int isRifleSold;
+    int isBallSold;
+
+	public Text moneyAmountText;
+	public Text riflePrice;
+    public Text ballPrice;
+
+	public Button buyRifleButton;
+    public Button buyBallButton;
+
+	// Use this for initialization
+	void Start () {
+		moneyAmount = PlayerPrefs.GetFloat ("MoneyAmount");
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+		moneyAmountText.text = "Money: " + moneyAmount.ToString() + "$";
+        isBallSold = PlayerPrefs.GetInt("IsBallSold");
+        isRifleSold = PlayerPrefs.GetInt ("IsRifleSold");
+
+        if (moneyAmount >= 5 && isBallSold == 0)
+            buyBallButton.interactable = true;
+        else
+            buyBallButton.interactable = false;
+
+        if (moneyAmount >= 5 && isRifleSold == 0)
+			buyRifleButton.interactable = true;
+		else
+			buyRifleButton.interactable = false;	
+	}
+
+	public void buyRifle()
+	{
+		moneyAmount -= 5;
+		PlayerPrefs.SetInt ("IsRifleSold", 1);
+		riflePrice.text = "Sold!";
+		buyRifleButton.gameObject.SetActive (false);
+	}
+
+    public void buyBall()
+    {
+        moneyAmount -= 5;
+        PlayerPrefs.SetInt("IsBallSold", 1);
+        ballPrice.text = "Sold!";
+        buyBallButton.gameObject.SetActive(false);
+    }
+
+    public void exitShop()
+	{
+		PlayerPrefs.SetFloat ("MoneyAmount", moneyAmount);
+        SceneManager.LoadScene ("GameScene");
+	}
+
+	public void resetPlayerPrefs()
+	{
+		moneyAmount = 0;
+        GameControlScript1.moneyAmountPerclick = 1;
+		buyRifleButton.gameObject.SetActive (true);
+        buyBallButton.gameObject.SetActive(true);
+        riflePrice.text = "Price: 5$";
+        ballPrice.text = "Price: 5$";
+        PlayerPrefs.DeleteKey ("IsBallSold");
+        PlayerPrefs.DeleteKey("MoneyAmount");
+        PlayerPrefs.DeleteKey("IsRifleSold");
+        //PlayerPrefs.DeleteKey("Cost");
+
+    }
+
+}
