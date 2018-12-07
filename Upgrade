@@ -1,0 +1,45 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class Upgrade : MonoBehaviour
+{
+
+    public GameControlScript1 click;
+    public UnityEngine.UI.Text itemInfo;
+    public float cost;
+    public int count = 0;
+    public int clickPower;
+    public string ItemName;
+    public float baseCost;
+
+
+    public void Start()
+    {
+        baseCost = cost;
+        //cost = PlayerPrefs.GetFloat("Cost");
+
+    }
+    void Update()
+    {
+        itemInfo.text = ItemName + "\nCost: " + cost + "\nPower :+" + clickPower;
+        //PlayerPrefs.GetFloat("Cost");
+        //PlayerPrefs.GetInt("Count");
+        //PlayerPrefs.GetInt("Power");
+        //clickPower = PlayerPrefs.GetInt("ClickPower"); PlayerPrefs.SetInt("ClickPower", clickPower);
+    }
+
+    public void PurchasedUpgrade()
+    {
+        if (GameControlScript1.moneyAmount >= cost)
+        {
+            GameControlScript1.moneyAmount -= cost;
+            count += 1;
+            GameControlScript1.moneyAmountPerclick += clickPower;
+            clickPower += 1;
+            cost = Mathf.Round(baseCost * Mathf.Pow(1.5825f, count));
+            //gameObject.layer -= 2;
+        
+        }
+    }
+}
