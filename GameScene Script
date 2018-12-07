@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class GameControlScript1 : MonoBehaviour
+{
+
+    public Text moneyText;
+    public Text MoneyAmountPerclik;
+    public static float moneyAmount;
+    int isBallSold;
+    int isRifleSold;
+    public GameObject rifle;
+    public GameObject ball;
+    public static float moneyAmountPerclick = 1;
+
+    // Use this for initialization
+    void Update()
+    {
+        MoneyAmountPerclik.text = "Per Click: " + moneyAmountPerclick.ToString();
+        //moneyText.text = "Money: " + moneyAmount.ToString() + "$";
+
+        if (moneyAmount > 1000000000) moneyText.text = "Money: " + (moneyAmount / 1000000000).ToString("F") + "B";
+        else if (moneyAmount > 1000000) moneyText.text = "Money: " + (moneyAmount / 1000000).ToString("F") + "M";
+        else if (moneyAmount > 1000) moneyText.text = "Money: " + (moneyAmount / 1000).ToString("F") + "K";
+        else if (moneyAmount < 1000) moneyText.text = "Money: " + moneyAmount.ToString();
+
+        if (moneyAmountPerclick > 1000000000) MoneyAmountPerclik.text = "Per Click: " + (moneyAmountPerclick / 1000000000).ToString("F") + "B";
+        else if (moneyAmountPerclick > 1000000) MoneyAmountPerclik.text = "Per Click: " + (moneyAmountPerclick / 1000000).ToString("F") + "M";
+        else if (moneyAmountPerclick > 1000) MoneyAmountPerclik.text = "Per Click: " + (moneyAmountPerclick / 1000).ToString("F") + "K";
+        else if (moneyAmountPerclick < 1000) MoneyAmountPerclik.text = "Per Click: " + moneyAmountPerclick.ToString();
+        //clickPower = PlayerPrefs.GetInt("ClickPower"); PlayerPrefs.SetInt("ClickPower", clickPower);
+    }
+
+
+
+
+    public void Clicked()
+{
+        moneyAmount += moneyAmountPerclick;
+    }
+
+   
+
+    void Start()
+    {
+        moneyAmount = PlayerPrefs.GetFloat("MoneyAmount");
+        isRifleSold = PlayerPrefs.GetInt("IsRifleSold");
+        isBallSold = PlayerPrefs.GetInt("IsBallSold");
+
+        if (isRifleSold == 1)
+            rifle.SetActive(true);
+        else
+            rifle.SetActive(false);
+
+        if (isBallSold == 1)
+            ball.SetActive(true);
+        else
+            ball.SetActive(false);
+    }
+
+    // Update is called once per frame
+    public void gotoShop()
+    {
+        //PlayerPrefs.SetFloat("Cost", Upgrade.cost);
+        PlayerPrefs.SetFloat("MoneyAmount", moneyAmount);
+        SceneManager.LoadScene("ShopScene");
+    }
+}
+
+/*   public void resetPlayerPrefs()
+   {
+       PlayerPrefs.SetFloat("Cost", cost);
+   }
+
+}
+*/
